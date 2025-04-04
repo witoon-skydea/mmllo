@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board | MMLLO</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <nav class="navbar">
+    <h1 class="logo"><a href="/">MMLLO</a></h1>
+    <ul id="navbar-right">
+      <!-- Navbar content will be updated by JavaScript -->
+    </ul>
+  </nav>
+  
+  <div id="alerts-container"></div>
+  
+  <div id="board-view" class="container">
+    <div class="board-header">
+      <!-- Board header will be updated by JavaScript -->
+      <div class="board-title">Loading board...</div>
+      <div class="board-menu"></div>
+    </div>
+    
+    <div id="lists-container" class="lists-container">
+      <!-- Lists will be added dynamically by JavaScript -->
+      <div class="loading">Loading lists...</div>
+    </div>
+  </div>
+  
+  <!-- Card Detail Modal -->
+  <div id="card-detail-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="card-detail-title">Card Title</h2>
+        <span class="modal-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="card-detail-section">
+          <h3>Description</h3>
+          <div id="card-detail-description">Card description will appear here...</div>
+          <button class="btn btn-sm edit-description-btn">Edit</button>
+          <div class="edit-description-form" style="display: none;">
+            <textarea id="edit-description" class="form-control"></textarea>
+            <div class="form-actions">
+              <button class="btn btn-success save-description-btn">Save</button>
+              <button class="btn cancel-description-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-detail-section">
+          <h3>Labels</h3>
+          <div id="card-detail-labels" class="card-labels">
+            <!-- Labels will be added dynamically by JavaScript -->
+          </div>
+          <button class="btn btn-sm edit-labels-btn">Edit Labels</button>
+          <div class="edit-labels-form" style="display: none;">
+            <div class="label-options">
+              <div class="label-option">
+                <span class="label label-green"></span>
+                <input type="checkbox" id="label-green" value="green">
+                <label for="label-green">Green</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-yellow"></span>
+                <input type="checkbox" id="label-yellow" value="yellow">
+                <label for="label-yellow">Yellow</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-orange"></span>
+                <input type="checkbox" id="label-orange" value="orange">
+                <label for="label-orange">Orange</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-red"></span>
+                <input type="checkbox" id="label-red" value="red">
+                <label for="label-red">Red</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-blue"></span>
+                <input type="checkbox" id="label-blue" value="blue">
+                <label for="label-blue">Blue</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-purple"></span>
+                <input type="checkbox" id="label-purple" value="purple">
+                <label for="label-purple">Purple</label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-success save-labels-btn">Save</button>
+              <button class="btn cancel-labels-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-detail-section">
+          <h3>Due Date</h3>
+          <div id="card-detail-due-date">
+            <span>No due date</span>
+            <button class="btn btn-sm add-due-date-btn">Add</button>
+          </div>
+          <div class="edit-due-date-form" style="display: none;">
+            <input type="datetime-local" id="edit-due-date" class="form-control">
+            <div class="form-actions">
+              <button class="btn btn-success save-due-date-btn">Save</button>
+              <button class="btn cancel-due-date-btn">Cancel</button>
+              <button class="btn btn-danger remove-due-date-btn">Remove</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-detail-section">
+          <h3>Comments</h3>
+          <div id="card-detail-comments" class="card-comments">
+            <!-- Comments will be added dynamically by JavaScript -->
+            <div class="no-comments">No comments yet</div>
+          </div>
+          <div class="add-comment-form">
+            <textarea id="new-comment" class="form-control" placeholder="Write a comment..."></textarea>
+            <button class="btn btn-success add-comment-btn">Add Comment</button>
+          </div>
+        </div>
+        
+        <div class="card-detail-actions">
+          <button class="btn btn-danger delete-card-btn">Delete Card</button>
+          <button class="btn move-card-btn">Move Card</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Board Settings Modal -->
+  <div id="board-settings-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Board Settings</h2>
+        <span class="modal-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="board-settings-form">
+          <div class="form-group">
+            <label for="edit-board-title">Board Title</label>
+            <input type="text" id="edit-board-title" name="edit-board-title" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-board-description">Description</label>
+            <textarea id="edit-board-description" name="edit-board-description" class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="edit-board-background">Background Color</label>
+            <input type="color" id="edit-board-background" name="edit-board-background" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="edit-board-starred">
+              Star this board
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+        </form>
+        
+        <div class="board-settings-section">
+          <h3>Board Members</h3>
+          <div id="board-members" class="board-members">
+            <!-- Board members will be added dynamically by JavaScript -->
+            <div class="loading">Loading members...</div>
+          </div>
+          <button class="btn add-member-btn">Add Member</button>
+        </div>
+        
+        <div class="board-settings-danger">
+          <h3>Danger Zone</h3>
+          <button class="btn btn-danger delete-board-btn">Delete Board</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Card Modal -->
+  <div id="add-card-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Card</h2>
+        <span class="modal-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="add-card-form">
+          <input type="hidden" id="add-card-list-id">
+          <div class="form-group">
+            <label for="add-card-title">Card Title</label>
+            <input type="text" id="add-card-title" name="add-card-title" class="form-control" placeholder="Enter card title" required>
+          </div>
+          <div class="form-group">
+            <label for="add-card-description">Description (optional)</label>
+            <textarea id="add-card-description" name="add-card-description" class="form-control" placeholder="Add a description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Labels (optional)</label>
+            <div class="label-options">
+              <div class="label-option">
+                <span class="label label-green"></span>
+                <input type="checkbox" id="add-card-label-green" value="green">
+                <label for="add-card-label-green">Green</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-yellow"></span>
+                <input type="checkbox" id="add-card-label-yellow" value="yellow">
+                <label for="add-card-label-yellow">Yellow</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-orange"></span>
+                <input type="checkbox" id="add-card-label-orange" value="orange">
+                <label for="add-card-label-orange">Orange</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-red"></span>
+                <input type="checkbox" id="add-card-label-red" value="red">
+                <label for="add-card-label-red">Red</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-blue"></span>
+                <input type="checkbox" id="add-card-label-blue" value="blue">
+                <label for="add-card-label-blue">Blue</label>
+              </div>
+              <div class="label-option">
+                <span class="label label-purple"></span>
+                <input type="checkbox" id="add-card-label-purple" value="purple">
+                <label for="add-card-label-purple">Purple</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="add-card-due-date">Due Date (optional)</label>
+            <input type="datetime-local" id="add-card-due-date" name="add-card-due-date" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Add Card</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <p>&copy; 2025 MMLLO. All rights reserved.</p>
+  </footer>
+  
+  <script src="/js/app.js"></script>
+  <script>
+    // Show board settings
+    function showBoardSettings() {
+      const modal = document.getElementById('board-settings-modal');
+      const board = state.currentBoard;
+      
+      if (!board) return;
+      
+      // Populate form fields
+      document.getElementById('edit-board-title').value = board.title;
+      document.getElementById('edit-board-description').value = board.description || '';
+      document.getElementById('edit-board-background').value = board.background || '#0079bf';
+      document.getElementById('edit-board-starred').checked = board.is_starred;
+      
+      // Populate members list
+      const membersContainer = document.getElementById('board-members');
+      
+      if (board.members && board.members.length > 0) {
+        membersContainer.innerHTML = '';
+        
+        board.members.forEach(member => {
+          const memberItem = document.createElement('div');
+          memberItem.className = 'board-member';
+          
+          memberItem.innerHTML = `
+            <div class="member-info">
+              <span class="member-name">${member.username}</span>
+              <span class="member-role">${member.role}</span>
+            </div>
+            <div class="member-actions">
+              <select class="role-select" data-user-id="${member.id}">
+                <option value="admin" ${member.role === 'admin' ? 'selected' : ''}>Admin</option>
+                <option value="member" ${member.role === 'member' ? 'selected' : ''}>Member</option>
+                <option value="viewer" ${member.role === 'viewer' ? 'selected' : ''}>Viewer</option>
+              </select>
+              <button class="btn btn-sm btn-danger remove-member-btn" data-user-id="${member.id}">Remove</button>
+            </div>
+          `;
+          
+          membersContainer.appendChild(memberItem);
+        });
+      } else {
+        membersContainer.innerHTML = '<div>No additional members</div>';
+      }
+      
+      // Show modal
+      modal.style.display = 'flex';
+      
+      // Set up event listeners
+      const closeBtn = modal.querySelector('.modal-close');
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      // Set up form submit event
+      const form = document.getElementById('board-settings-form');
+      form.addEventListener('submit', updateBoard);
+      
+      // Set up member role changes
+      const roleSelects = document.querySelectorAll('.role-select');
+      roleSelects.forEach(select => {
+        select.addEventListener('change', updateMemberRole);
+      });
+      
+      // Set up remove member buttons
+      const removeButtons = document.querySelectorAll('.remove-member-btn');
+      removeButtons.forEach(button => {
+        button.addEventListener('click', removeMember);
+      });
+      
+      // Set up add member button
+      const addMemberBtn = document.querySelector('.add-member-btn');
+      addMemberBtn.addEventListener('click', showAddMemberForm);
+      
+      // Set up delete board button
+      const deleteBoardBtn = document.querySelector('.delete-board-btn');
+      deleteBoardBtn.addEventListener('click', confirmDeleteBoard);
+    }
+    
+    // Show add card form
+    function showAddCardForm(listId) {
+      const modal = document.getElementById('add-card-modal');
+      
+      // Set list ID
+      document.getElementById('add-card-list-id').value = listId;
+      
+      // Show modal
+      modal.style.display = 'flex';
+      
+      // Set up event listeners
+      const closeBtn = modal.querySelector('.modal-close');
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      // Set up form submit event
+      const form = document.getElementById('add-card-form');
+      form.addEventListener('submit', createCard);
+    }
+    
+    // Open card detail
+    function openCardDetail(card) {
+      const modal = document.getElementById('card-detail-modal');
+      
+      // Populate card details
+      document.getElementById('card-detail-title').textContent = card.title;
+      document.getElementById('card-detail-description').textContent = card.description || 'No description';
+      document.getElementById('edit-description').value = card.description || '';
+      
+      // Populate labels
+      const labelsContainer = document.getElementById('card-detail-labels');
+      labelsContainer.innerHTML = '';
+      
+      if (card.labels && card.labels.length > 0) {
+        card.labels.forEach(label => {
+          const labelElement = document.createElement('span');
+          labelElement.className = `label label-${label}`;
+          labelsContainer.appendChild(labelElement);
+        });
+      } else {
+        labelsContainer.innerHTML = '<span>No labels</span>';
+      }
+      
+      // Check label checkboxes
+      const labelCheckboxes = document.querySelectorAll('.label-option input[type="checkbox"]');
+      labelCheckboxes.forEach(checkbox => {
+        checkbox.checked = card.labels && card.labels.includes(checkbox.value);
+      });
+      
+      // Populate due date
+      const dueDateContainer = document.getElementById('card-detail-due-date');
+      
+      if (card.due_date) {
+        const dueDate = new Date(card.due_date);
+        const isOverdue = dueDate < new Date();
+        
+        dueDateContainer.innerHTML = `
+          <span class="${isOverdue ? 'overdue' : ''}">${dueDate.toLocaleString()}</span>
+          <button class="btn btn-sm edit-due-date-btn">Edit</button>
+        `;
+        
+        document.getElementById('edit-due-date').value = dueDate.toISOString().slice(0, 16);
+      } else {
+        dueDateContainer.innerHTML = `
+          <span>No due date</span>
+          <button class="btn btn-sm add-due-date-btn">Add</button>
+        `;
+      }
+      
+      // Populate comments
+      const commentsContainer = document.getElementById('card-detail-comments');
+      
+      if (card.comments && card.comments.length > 0) {
+        commentsContainer.innerHTML = '';
+        
+        card.comments.forEach(comment => {
+          const commentElement = document.createElement('div');
+          commentElement.className = 'comment';
+          
+          commentElement.innerHTML = `
+            <div class="comment-header">
+              <span class="comment-author">${comment.username}</span>
+              <span class="comment-date">${new Date(comment.created_at).toLocaleString()}</span>
+            </div>
+            <div class="comment-content">${comment.content}</div>
+          `;
+          
+          commentsContainer.appendChild(commentElement);
+        });
+      } else {
+        commentsContainer.innerHTML = '<div class="no-comments">No comments yet</div>';
+      }
+      
+      // Store card ID for actions
+      modal.dataset.cardId = card.id;
+      
+      // Show modal
+      modal.style.display = 'flex';
+      
+      // Set up event listeners
+      const closeBtn = modal.querySelector('.modal-close');
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      // Set up edit description buttons
+      const editDescBtn = document.querySelector('.edit-description-btn');
+      const editDescForm = document.querySelector('.edit-description-form');
+      const saveDescBtn = document.querySelector('.save-description-btn');
+      const cancelDescBtn = document.querySelector('.cancel-description-btn');
+      
+      editDescBtn.addEventListener('click', () => {
+        document.getElementById('card-detail-description').style.display = 'none';
+        editDescBtn.style.display = 'none';
+        editDescForm.style.display = 'block';
+      });
+      
+      saveDescBtn.addEventListener('click', updateCardDescription);
+      
+      cancelDescBtn.addEventListener('click', () => {
+        editDescForm.style.display = 'none';
+        document.getElementById('card-detail-description').style.display = 'block';
+        editDescBtn.style.display = 'inline-block';
+      });
+      
+      // Set up edit labels buttons
+      const editLabelsBtn = document.querySelector('.edit-labels-btn');
+      const editLabelsForm = document.querySelector('.edit-labels-form');
+      const saveLabelsBtn = document.querySelector('.save-labels-btn');
+      const cancelLabelsBtn = document.querySelector('.cancel-labels-btn');
+      
+      editLabelsBtn.addEventListener('click', () => {
+        document.getElementById('card-detail-labels').style.display = 'none';
+        editLabelsBtn.style.display = 'none';
+        editLabelsForm.style.display = 'block';
+      });
+      
+      saveLabelsBtn.addEventListener('click', updateCardLabels);
+      
+      cancelLabelsBtn.addEventListener('click', () => {
+        editLabelsForm.style.display = 'none';
+        document.getElementById('card-detail-labels').style.display = 'block';
+        editLabelsBtn.style.display = 'inline-block';
+      });
+      
+      // Set up due date buttons
+      const addDueDateBtn = document.querySelector('.add-due-date-btn');
+      const editDueDateBtn = document.querySelector('.edit-due-date-btn');
+      const editDueDateForm = document.querySelector('.edit-due-date-form');
+      const saveDueDateBtn = document.querySelector('.save-due-date-btn');
+      const cancelDueDateBtn = document.querySelector('.cancel-due-date-btn');
+      const removeDueDateBtn = document.querySelector('.remove-due-date-btn');
+      
+      if (addDueDateBtn) {
+        addDueDateBtn.addEventListener('click', () => {
+          dueDateContainer.style.display = 'none';
+          editDueDateForm.style.display = 'block';
+        });
+      }
+      
+      if (editDueDateBtn) {
+        editDueDateBtn.addEventListener('click', () => {
+          dueDateContainer.style.display = 'none';
+          editDueDateForm.style.display = 'block';
+        });
+      }
+      
+      saveDueDateBtn.addEventListener('click', updateCardDueDate);
+      
+      cancelDueDateBtn.addEventListener('click', () => {
+        editDueDateForm.style.display = 'none';
+        dueDateContainer.style.display = 'block';
+      });
+      
+      removeDueDateBtn.addEventListener('click', removeCardDueDate);
+      
+      // Set up add comment button
+      const addCommentBtn = document.querySelector('.add-comment-btn');
+      addCommentBtn.addEventListener('click', addComment);
+      
+      // Set up delete card button
+      const deleteCardBtn = document.querySelector('.delete-card-btn');
+      deleteCardBtn.addEventListener('click', confirmDeleteCard);
+      
+      // Set up move card button
+      const moveCardBtn = document.querySelector('.move-card-btn');
+      moveCardBtn.addEventListener('click', showMoveCardForm);
+    }
+  </script>
+</body>
+</html>
