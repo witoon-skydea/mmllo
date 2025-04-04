@@ -81,6 +81,12 @@ app.use(`${apiBasePath}/boards`, boardRoutes);
 app.use(`${apiBasePath}/lists`, listRoutes);
 app.use(`${apiBasePath}/cards`, cardRoutes);
 
+// Also register routes without BASE_PATH for direct API access
+app.use('/api/auth', authRoutes);
+app.use('/api/boards', boardRoutes);
+app.use('/api/lists', listRoutes);
+app.use('/api/cards', cardRoutes);
+
 // Redirect root to BASE_PATH if BASE_PATH is set
 if (BASE_PATH) {
   app.get('/', (req, res) => {

@@ -82,6 +82,8 @@ mmllo/
 
 ## API Endpoints
 
+> **Note:** API endpoints can be accessed directly at `/api/...` or through the BASE_PATH at `/mmllo/api/...` if you've set BASE_PATH=/mmllo in your .env file.
+
 ### Authentication
 
 - `POST /api/auth/register` - Register a new user
