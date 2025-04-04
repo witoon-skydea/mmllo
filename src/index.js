@@ -6,6 +6,25 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
+const { connectMongoDB } = require('./config/mongodb');
+
+// Try to connect to MongoDB if it's configured
+if (process.env.MONGODB_URI) {
+  connectMongoDB()
+    .then(connected => {
+      if (connected) {
+        console.log('MongoDB is available and connected');
+      } else {
+        console.log('Continuing with SQLite only');
+      }
+    })
+    .catch(err => {
+      console.error('Failed to connect to MongoDB:', err);
+      console.log('Continuing with SQLite only');
+    });
+} else {
+  console.log('No MongoDB URI found, using SQLite only');
+}
 
 // Import routes
 const authRoutes = require('./routes/auth');
