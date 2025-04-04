@@ -4,15 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register | MMLLO</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <base id="baseUrl">
 </head>
 <body>
   <nav class="navbar">
-    <h1 class="logo"><a href="/">MMLLO</a></h1>
+    <h1 class="logo"><a href="." id="homeLink">MMLLO</a></h1>
     <ul id="navbar-right">
-      <li><a href="/login.html">Login</a></li>
-      <li><a href="/register.html" class="active">Register</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="register.html" class="active">Register</a></li>
     </ul>
   </nav>
   
@@ -41,7 +42,7 @@
         <button type="submit" class="btn btn-primary btn-block">Register</button>
       </form>
       <p class="mt-1 text-center">
-        Already have an account? <a href="/login.html">Login here</a>
+        Already have an account? <a href="login.html">Login here</a>
       </p>
     </div>
   </div>
@@ -50,6 +51,17 @@
     <p>&copy; 2025 MMLLO. All rights reserved.</p>
   </footer>
   
-  <script src="/js/app.js"></script>
+  <script>
+    // Set base URL dynamically
+    const getBasePath = () => {
+      const pathSegments = window.location.pathname.split('/');
+      if (pathSegments.length >= 2 && pathSegments[1] === 'mmllo') {
+        return '/mmllo/';
+      }
+      return '/';
+    };
+    document.getElementById('baseUrl').href = getBasePath();
+  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>
