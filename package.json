@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "use-sqlite": "cross-env USE_MONGODB=false node src/index.js",
+    "use-mongodb": "cross-env USE_MONGODB=true node src/index.js"
   },
   "keywords": [
     "trello",
@@ -27,9 +29,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.1",
     "morgan": "^1.10.0",
+    "sortablejs": "^1.15.6",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.9"
   }
 }

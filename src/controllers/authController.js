@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const { getModels } = require('../models/factory');
 require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -7,6 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Register a new user
 const register = async (req, res) => {
   try {
+    const { User } = getModels();
     const { username, email, password } = req.body;
     
     // Validate inputs
@@ -61,6 +62,7 @@ const register = async (req, res) => {
 // Login a user
 const login = async (req, res) => {
   try {
+    const { User } = getModels();
     const { username, password } = req.body;
     
     // Validate inputs
@@ -122,6 +124,7 @@ const logout = (req, res) => {
 // Get current user
 const getCurrentUser = async (req, res) => {
   try {
+    const { User } = getModels();
     const userId = req.user.id;
     
     // Find user

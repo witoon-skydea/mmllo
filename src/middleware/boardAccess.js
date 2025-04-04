@@ -1,9 +1,11 @@
-const Board = require('../models/Board');
+const { getModels } = require('../models/factory');
 
 // Middleware to check if the user has access to a board
 const checkBoardAccess = async (req, res, next) => {
   try {
-    const boardId = parseInt(req.params.id) || parseInt(req.params.boardId);
+    const { Board, isMongoDB } = getModels();
+    const boardIdParam = req.params.id || req.params.boardId;
+    const boardId = isMongoDB ? boardIdParam : parseInt(boardIdParam);
     const userId = req.user.id;
     
     if (!boardId) {
@@ -26,7 +28,9 @@ const checkBoardAccess = async (req, res, next) => {
 // Middleware to check if the user is board owner
 const checkBoardOwnership = async (req, res, next) => {
   try {
-    const boardId = parseInt(req.params.id) || parseInt(req.params.boardId);
+    const { Board, isMongoDB } = getModels();
+    const boardIdParam = req.params.id || req.params.boardId;
+    const boardId = isMongoDB ? boardIdParam : parseInt(boardIdParam);
     const userId = req.user.id;
     
     if (!boardId) {

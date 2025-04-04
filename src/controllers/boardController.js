@@ -1,10 +1,9 @@
-const Board = require('../models/Board');
-const List = require('../models/List');
-const Card = require('../models/Card');
+const { getModels } = require('../models/factory');
 
 // Get all boards for the current user
 const getUserBoards = async (req, res) => {
   try {
+    const { Board } = getModels();
     const userId = req.user.id;
     
     const boards = await Board.findByUser(userId);
@@ -19,7 +18,8 @@ const getUserBoards = async (req, res) => {
 // Get a single board with all lists and cards
 const getBoard = async (req, res) => {
   try {
-    const boardId = parseInt(req.params.id);
+    const { Board, List, Card, isMongoDB } = getModels();
+    const boardId = isMongoDB ? req.params.id : parseInt(req.params.id);
     
     // Get the board
     const board = await Board.findById(boardId);
@@ -32,7 +32,8 @@ const getBoard = async (req, res) => {
     
     // Get cards for each list
     const listsWithCards = await Promise.all(lists.map(async (list) => {
-      const cards = await Card.findByList(list.id);
+      const listId = isMongoDB ? list._id || list.id : list.id;
+      const cards = await Card.findByList(listId);
       
       // Parse labels from JSON string
       const parsedCards = cards.map(card => ({
@@ -65,6 +66,7 @@ const getBoard = async (req, res) => {
 // Create a new board
 const createBoard = async (req, res) => {
   try {
+    const { Board } = getModels();
     const { title, description, background } = req.body;
     const owner_id = req.user.id;
     

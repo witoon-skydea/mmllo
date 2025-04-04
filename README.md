@@ -19,9 +19,10 @@ MMLLO is a Trello-like kanban board application built with Node.js and SQLite. I
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
-- **Database**: SQLite (primary), MongoDB (optional)
+- **Database**: SQLite (default), MongoDB (optional)
 - **Authentication**: JWT (JSON Web Tokens)
-- **Frontend**: (Planned for future implementation - React.js)
+- **Frontend**: HTML/CSS/JavaScript (with plans for React.js implementation)
+- **Drag and Drop**: Planned implementation with SortableJS
 
 ## Project Structure
 
@@ -73,12 +74,28 @@ mmllo/
    BASE_PATH=/mmllo  # Optional - for subdirectory deployment
    ```
 
-4. Start the development server:
+4. Choose your preferred database and start the server:
+
+   Using SQLite (default):
    ```
    npm run dev
    ```
 
-5. The server will be running at `http://localhost:3000`
+   Using MongoDB:
+   ```
+   npm run use-mongodb
+   ```
+
+5. The server will be running at `http://localhost:4567/mmllo`
+
+## Database Choice
+
+MMLLO supports both SQLite and MongoDB:
+
+- **SQLite**: Used by default for local development and simplicity
+- **MongoDB**: Can be enabled by setting `USE_MONGODB=true` in your .env file or by using the `npm run use-mongodb` command
+
+You can dynamically switch between databases using the appropriate npm scripts or by changing the .env file.
 
 ## API Endpoints
 

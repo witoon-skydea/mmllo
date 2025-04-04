@@ -14,6 +14,11 @@ if (process.env.MONGODB_URI) {
     .then(connected => {
       if (connected) {
         console.log('MongoDB is available and connected');
+        if (process.env.USE_MONGODB === 'true') {
+          console.log('Using MongoDB as primary database');
+        } else {
+          console.log('MongoDB connected but not set as primary (USE_MONGODB=false)');
+        }
       } else {
         console.log('Continuing with SQLite only');
       }

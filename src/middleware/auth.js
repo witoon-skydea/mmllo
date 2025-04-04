@@ -16,6 +16,10 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const verified = jwt.verify(token, JWT_SECRET);
+    // Convert MongoDB ObjectID to string for consistency
+    if (verified && verified.id && typeof verified.id === 'object' && verified.id.toString) {
+      verified.id = verified.id.toString();
+    }
     req.user = verified;
     next();
   } catch (error) {
